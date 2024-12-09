@@ -1,6 +1,6 @@
 import requests
 
-Warn = input("WARNING: THIS WILL SHOW YOUR REAL IP ADRESS AND WE ARE NOT RESPONSABLE FOR WHAT HAPPENS, ARE YOU SURE YOU WOULD LIKE TO PASS [Y] [N]: ")
+Warn = input("WARNING: THIS WILL SHOW YOUR REAL IP ADRESS AND WE ARE NOT RESPONSIBLE FOR WHAT HAPPENS, ARE YOU SURE YOU WOULD LIKE TO CONTINUE [Y] [N]: ")
 if Warn == "Y":
     def get_public_ip():
 
@@ -13,5 +13,5 @@ if Warn == "Y":
     print("Your public IP address is:", get_public_ip(), "(DO NOT SHARE THIS)")
 
 if Warn == "N":
-    print("You have not accepted the warn, goodbye.")
+    print("You have not accepted the warning, goodbye.")
     exit()
