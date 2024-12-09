@@ -13,6 +13,7 @@ This repository is an abundance of free open source programs made in python.
 | InsanePassWordChecker.py |  Check your password with some insane checks (And it's all open source!)   | 12/9/24 |
 | Timer |  Time things with this text based timer  | 12/9/24 |
 | Dice |  Tired of doing your Dice Rolling in Vegas? Now you can roll dice virtually on a text based system   | 12/9/24 |
+| MemorablePasswordGenerator.py |  Makes a memorable password  | 12/9/24 |
 
 # TBA
 To Be Added
