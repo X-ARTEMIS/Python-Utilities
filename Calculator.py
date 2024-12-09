@@ -12,7 +12,4 @@ while 1==1:
         answer = num1 / num2
     else:
         answer = "ERROR: non-existent operation entered."
-    print("Your answer is", answer)
-
-    if answer=="ERROR: non-existent operation entered.":
-        print(answer)
+        print("Your answer is", answer)
