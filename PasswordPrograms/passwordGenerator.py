@@ -2,6 +2,7 @@ import secrets
 import string
 
 passwordLengthAnswer = int(input("How long would you like your password to be? → "))
+MemorableAnswer = input("Enter a memorable word → ")
 
 def create_pw(pw_length=passwordLengthAnswer):
    letters = string.ascii_letters
@@ -25,4 +26,4 @@ def create_pw(pw_length=passwordLengthAnswer):
 
 
 if __name__ == '__main__':
-   print(create_pw())
+   print(MemorableAnswer + create_pw())
