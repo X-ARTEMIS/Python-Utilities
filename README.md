@@ -1,2 +1,2 @@
 # Python-Utilities
-Free python utilities
+Utilities that may be useful to use, written in Python!
