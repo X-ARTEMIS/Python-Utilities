@@ -1,4 +1,4 @@
-def create_file(filename, content):
+def create_file(filename, content): # This is a script that can overwrite or create a new file depending on if the file already exists.
     with open(filename, "w") as file:
         file.write(content)
     print(f"File '{filename}' created successfully.")
