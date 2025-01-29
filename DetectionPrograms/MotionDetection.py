@@ -1,14 +1,30 @@
-# pip install opencv-python
 import cv2
+import os
 
 def main():
     # Open the video file
-    video_path = "C:/Users/BList/Videos/2024-12-29 16-43-16.mp4"  # Replace this with your video file path
+    video_path = "C:\\Users\\BList\\Videos\\2024-09-14 11-49-20.mp4"  # Replace this with your video file path
+
+    # Check if the file exists
+    if not os.path.exists(video_path):
+        print(f"Error: The file does not exist at the specified path: {video_path}")
+        return
+    
     cap = cv2.VideoCapture(video_path)
     
     if not cap.isOpened():
         print(f"Error: Could not open video file {video_path}")
         return
+
+    # Get the frame width, height, and frames per second (fps) from the video
+    frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    # Define the codec and create VideoWriter object to save the video
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    output_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'processed_video.avi')
+    out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 
     # Read the first frame
     ret, frame1 = cap.read()
@@ -49,6 +65,9 @@ def main():
             (x, y, w, h) = cv2.boundingRect(contour)
             cv2.rectangle(frame2, (x, y), (x + w, y + h), (0, 255, 0), 2)
         
+        # Write the frame with bounding boxes to the output video
+        out.write(frame2)
+        
         # Display the frame with bounding boxes
         cv2.imshow('Movement Detection', frame2)
         
@@ -59,9 +78,12 @@ def main():
         if cv2.waitKey(30) & 0xFF == ord('q'):
             break
     
-    # Release the video capture object and close all OpenCV windows
+    # Release the video capture and writer objects, and close all OpenCV windows
     cap.release()
+    out.release()
     cv2.destroyAllWindows()
+
+    print(f"Processed video saved to {output_path}")
 
 if __name__ == "__main__":
     main()
