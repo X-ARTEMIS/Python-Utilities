@@ -3,7 +3,7 @@ import os
 
 def main():
     # Open the video file
-    video_path = "C:\\Users\\BList\\Videos\\2024-09-14 11-49-20.mp4"  # Replace this with your video file path
+    video_path = input("Please enter the path for your video(Ensure that you replace \ with \\ or /): ")
 
     # Check if the file exists
     if not os.path.exists(video_path):
