@@ -67,16 +67,18 @@ class FileExecutorApp:
 
     def update_folder_list(self):
         self.folder_listbox.delete(0, tk.END)
-        for item in os.listdir(self.extracted_folder_path):
-            item_path = os.path.join(self.extracted_folder_path, item)
-            if os.path.isdir(item_path):
+        base_dir = os.path.dirname(self.extracted_folder_path)
+        for item in os.listdir(base_dir):
+            item_path = os.path.join(base_dir, item)
+            if os.path.isdir(item_path) and item.startswith("Python-Utilities"):
+                print(f"Adding folder to list: {item}")  # Debugging print statement
                 self.folder_listbox.insert(tk.END, item)
 
     def on_folder_select(self, event):
         selected_index = self.folder_listbox.curselection()
         if selected_index:
             selected_folder = self.folder_listbox.get(selected_index)
-            self.selected_folder_path = os.path.join(self.extracted_folder_path, selected_folder)
+            self.selected_folder_path = os.path.join(os.path.dirname(self.extracted_folder_path), selected_folder)
             self.update_file_list()
 
     def update_file_list(self):
