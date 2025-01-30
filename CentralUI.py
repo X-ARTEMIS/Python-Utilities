@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import os
 import subprocess
 import requests
@@ -10,6 +10,11 @@ class FileExecutorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Python Utilities Executor")
+        self.root.geometry("600x400")
+
+        # Apply a theme
+        self.style = ttk.Style()
+        self.style.theme_use('clam')  # You can try other themes like 'alt', 'default', 'classic', etc.
 
         # Fetch the latest release name
         self.latest_release_name = self.get_latest_release_name()
@@ -29,20 +34,20 @@ class FileExecutorApp:
         # Extract the ZIP file
         self.extract_zip_file()
 
-        self.label = tk.Label(root, text="Select a folder containing Python utilities")
+        self.label = ttk.Label(root, text="Select a folder containing Python utilities")
         self.label.pack(pady=10)
 
         self.folder_listbox = tk.Listbox(root, selectmode=tk.SINGLE)
         self.folder_listbox.pack(pady=10, fill=tk.BOTH, expand=True)
         self.folder_listbox.bind('<<ListboxSelect>>', self.on_folder_select)
 
-        self.label_files = tk.Label(root, text="Select a Python file to execute")
+        self.label_files = ttk.Label(root, text="Select a Python file to execute")
         self.label_files.pack(pady=10)
 
         self.file_listbox = tk.Listbox(root, selectmode=tk.SINGLE)
         self.file_listbox.pack(pady=10, fill=tk.BOTH, expand=True)
 
-        self.execute_button = tk.Button(root, text="Open in CMD", command=self.open_in_cmd, state=tk.DISABLED)
+        self.execute_button = ttk.Button(root, text="Open in CMD", command=self.open_in_cmd, state=tk.DISABLED)
         self.execute_button.pack(pady=5)
 
         self.selected_folder_path = None
