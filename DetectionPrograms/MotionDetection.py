@@ -3,7 +3,7 @@ import os
 
 def main():
     # Open the video file
-    video_path = input("Please enter the path for your video(Ensure that you replace \ with \\ or /): ")
+    video_path = input("Please enter the path for your video(Ensure that you replace \ with double \ or /): ")
 
     # Check if the file exists
     if not os.path.exists(video_path):
