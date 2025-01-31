@@ -27,7 +27,7 @@ def find_folder_with_tag_name(tag_name, search_path):
 def find_file(filename, search_path):
     """Search for a file in the given directory and subdirectories."""
     for root, dirs, files in os.walk(search_path):
-        if filename in files:
+        if filename in files: 
             return os.path.join(root, filename)
     return None
 
@@ -51,7 +51,7 @@ def create_shortcut(target_path, icon_path):
 if __name__ == "__main__":
     # Define the filenames to search for
     filename_to_find = "CentralUI.py"
-    icon_filename = "Python-Icon.ico"
+    icon_filename = "PyUtilitiesIcon.ico"
     root_search_path = "C:/"
 
     # Get the latest release tag name
