@@ -1,7 +1,8 @@
-import os
 import requests
+import os
 import winshell
 from win32com.client import Dispatch
+from tqdm import tqdm
 
 GITHUB_API_URL = "https://api.github.com/repos/Stari-Div/Python-Utilities/releases/latest"
 
@@ -18,7 +19,7 @@ def get_latest_release_tag_name():
 def find_folder_with_tag_name(tag_name, search_path):
     """Search for a folder with 'Python-Utilities-' followed by the tag name in its name within the given directory."""
     search_for = f"Python-Utilities-{tag_name}"
-    for root, dirs, files in os.walk(search_path):
+    for root, dirs, files in tqdm(os.walk(search_path), desc="Searching for folder", unit="dir"):
         for dir_name in dirs:
             if search_for in dir_name:
                 return os.path.join(root, dir_name)
@@ -26,7 +27,7 @@ def find_folder_with_tag_name(tag_name, search_path):
 
 def find_file(filename, search_path):
     """Search for a file in the given directory and subdirectories."""
-    for root, dirs, files in os.walk(search_path):
+    for root, dirs, files in tqdm(os.walk(search_path), desc=f"Searching for {filename}", unit="file"):
         if filename in files: 
             return os.path.join(root, filename)
     return None
