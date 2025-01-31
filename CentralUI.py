@@ -1,12 +1,30 @@
+import sys
+import subprocess
 import tkinter as tk
 from tkinter import messagebox, ttk
 import os
-import subprocess
 import requests
 import zipfile
 import tempfile
 import json
 from PIL import Image, ImageTk  # Ensure you have Pillow installed
+
+def install_packages(packages):
+    """
+    Install a list of packages using pip.
+
+    Args:
+    packages (list): List of package names to install.
+    """
+    for package in packages:
+        try:
+            # Check if package is already installed
+            subprocess.check_call([sys.executable, '-m', 'pip', 'show', package])
+            print(f"{package} is already installed.")
+        except subprocess.CalledProcessError:
+            # If package is not installed, install it
+            print(f"Installing {package}...")
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
 class FileExecutorApp:
     def __init__(self, root):
@@ -119,6 +137,9 @@ class FileExecutorApp:
 
         self.close_button = ttk.Button(self.root, text="Close", command=self.root.destroy, style='Bottom.TButton')
         self.close_button.pack(pady=5)
+
+        self.install_button = ttk.Button(self.root, text="Install Packages", command=self.install_required_packages, style='Bottom.TButton')
+        self.install_button.pack(side=tk.LEFT, anchor='sw', pady=5, padx=5)
 
         # Define a custom style for the bottom buttons
         self.style.configure('Bottom.TButton', foreground='black', background='white')
@@ -286,6 +307,11 @@ class FileExecutorApp:
                 messagebox.showerror("Error", f"Could not delete folder: {e}")
         else:
             messagebox.showwarning("No Selection", "Please select a file or folder to delete")
+
+    def install_required_packages(self):
+        packages_to_install = ["requests", "Pillow"]
+        install_packages(packages_to_install)
+        messagebox.showinfo("Installation Complete", "Required packages have been installed.")
 
     def open_settings(self):
         settings_window = tk.Toplevel(self.root)
