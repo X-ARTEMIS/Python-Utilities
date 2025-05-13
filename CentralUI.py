@@ -7,10 +7,11 @@ import subprocess
 import json
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QMessageBox, QFileDialog, QVBoxLayout,
-    QWidget, QPushButton, QLabel, QListWidget, QComboBox, QLineEdit, QDialog
+    QWidget, QPushButton, QLabel, QListWidget, QComboBox, QLineEdit, QDialog, QHBoxLayout
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
+from PySide6.QtCore import Qt, QUrl, QSize
+from PySide6.QtGui import QIcon, QDesktopServices
+
 
 def install_packages(packages):
     for package in packages:
@@ -20,6 +21,7 @@ def install_packages(packages):
         except subprocess.CalledProcessError:
             print(f"Installing {package}...")
             subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
+
 
 class SettingsDialog(QDialog):
     def __init__(self, config, save_callback, parent=None):
@@ -67,6 +69,7 @@ class SettingsDialog(QDialog):
         self.save_callback(self.config)
         self.accept()
 
+
 class FileExecutorApp(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -94,52 +97,78 @@ class FileExecutorApp(QMainWindow):
         self.create_config_if_not_exists()
         self.load_config()
 
+        # Search for discord_logo.png in Downloads directory
+        self.discord_logo_path = self.find_discord_logo()
+
         self.init_ui()
+
+    def find_discord_logo(self):
+        downloads_dir = os.path.expanduser("~/Downloads")
+        for root, _, files in os.walk(downloads_dir):
+            if "discord_logo.png" in files:
+                return os.path.join(root, "discord_logo.png")
+        return None
 
     def init_ui(self):
         self.setWindowTitle("Python Utilities Executor")
         self.resize(*map(int, self.config["window_geometry"].split("x")))
 
         central_widget = QWidget()
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+
+        # Top Layout for Discord Button
+        top_layout = QHBoxLayout()
+        discord_button = QPushButton()
+        if self.discord_logo_path:
+            discord_button.setIcon(QIcon(self.discord_logo_path))
+        else:
+            discord_button.setText("Discord")  # Fallback text if icon is not found
+        discord_button.setIconSize(QSize(24, 24))
+        discord_button.setToolTip("Join our Discord Server")
+        discord_button.clicked.connect(self.open_discord_server)
+        discord_button.setMaximumSize(discord_button.sizeHint())  # Make the button as small as needed
+        top_layout.addWidget(discord_button, alignment=Qt.AlignLeft)
+        top_layout.addStretch()  # Push everything else to the right
+
+        main_layout.addLayout(top_layout)
 
         # Folder Selector
-        layout.addWidget(QLabel("Select a folder containing Python utilities"))
+        main_layout.addWidget(QLabel("Select a folder containing Python utilities"))
         self.folder_list = QListWidget()
         self.folder_list.itemSelectionChanged.connect(self.on_folder_select)
-        layout.addWidget(self.folder_list)
+        main_layout.addWidget(self.folder_list)
 
         # File Selector
-        layout.addWidget(QLabel("Select a file to execute"))
+        main_layout.addWidget(QLabel("Select a file to execute"))
         self.file_list = QListWidget()
         self.file_list.itemSelectionChanged.connect(self.update_buttons_state)
-        layout.addWidget(self.file_list)
+        main_layout.addWidget(self.file_list)
 
         # Buttons
         self.execute_button = QPushButton("Open in CMD")
         self.execute_button.clicked.connect(self.open_in_cmd)
         self.execute_button.setEnabled(False)
-        layout.addWidget(self.execute_button)
+        main_layout.addWidget(self.execute_button)
 
         self.open_location_button = QPushButton("Open in File Location")
         self.open_location_button.clicked.connect(self.open_in_file_location)
         self.open_location_button.setEnabled(False)
-        layout.addWidget(self.open_location_button)
+        main_layout.addWidget(self.open_location_button)
 
         self.delete_button = QPushButton("Delete")
         self.delete_button.clicked.connect(self.delete_file)
         self.delete_button.setEnabled(False)
-        layout.addWidget(self.delete_button)
+        main_layout.addWidget(self.delete_button)
 
         install_button = QPushButton("Install Packages")
         install_button.clicked.connect(self.install_required_packages)
-        layout.addWidget(install_button)
+        main_layout.addWidget(install_button)
 
         settings_button = QPushButton("Settings")
         settings_button.clicked.connect(self.open_settings)
-        layout.addWidget(settings_button)
+        main_layout.addWidget(settings_button)
 
-        central_widget.setLayout(layout)
+        central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
         self.update_folder_list()
@@ -257,11 +286,13 @@ class FileExecutorApp(QMainWindow):
         dialog = SettingsDialog(self.config, self.save_config, self)
         dialog.exec()
 
+    def open_discord_server(self):
+        discord_url = "https://discord.gg/ehtnBtreVg"
+        QDesktopServices.openUrl(QUrl(discord_url))
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = FileExecutorApp()
     window.show()
     sys.exit(app.exec())
-    root = tk.Tk()
-    app = FileExecutorApp(root)
-    root.mainloop()
