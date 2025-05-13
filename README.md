@@ -16,4 +16,4 @@
 </div>
 
 # Welcome to Python-Utilities
-This repository is an abundance of free open source programs made in python.
+This repository is an abundance of free open source programs made in python. When using a newer version of the app please delete all old versions. If you recieve an error which says it couldn't find the new version when trying to start the app that means your application is outdated.
