@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="Images-Release/New/Py-Utilities-Fit.png"
+    <img src="Images-Release/New/pythonisuzu.png"
         height="130">
 
 <div align="center">
